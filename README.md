@@ -15,4 +15,6 @@ In the app.py file a streamlit webapp is developed using the weights that was sa
 
 ![Screenshot_15](https://user-images.githubusercontent.com/76099682/235700258-805c2ab6-ecfc-447b-9800-cc7ef7e27c70.png)
 
+Here is the screenshot of the streamlit webapp
+
 :)
