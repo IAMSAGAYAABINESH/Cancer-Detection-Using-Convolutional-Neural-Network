@@ -3,6 +3,9 @@
 This project aims to develop a deep learning model based on Convolutional Neural Networks (CNNs) for 
 the detection of adrenocarcinoma (Cancerous lung tissue) or healthy lung tissues using histopathological images from biopsy. 
 
+Access The Image Dataset Zip File Here!
+https://mega.nz/file/KNxCCB4A#6uDlkC3ivxa4IkHhm9PsLFH8KytgRC6jO_oyrmvW7yA
+
 In the cancerpred.ipynb you can find the deep learning model (CNN) for training and testing the histopathological images from biopsy of the lung cells
 
 In the lungcane.h5 file the weights from the deep learning model is saved.
