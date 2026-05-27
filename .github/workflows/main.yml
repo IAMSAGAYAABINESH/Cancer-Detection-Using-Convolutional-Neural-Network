@@ -1,0 +1,37 @@
+name: Deploy App to Server
+
+on:
+  push:
+    branches:
+      - main  # Change this to 'master' if your default branch is named master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_IP }}
+        username: ${{ secrets.SSH_USER }} # Replace with your actual username string if not using a secret (e.g., 'ubuntu')
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: |
+          # 1. Navigate to your project directory on the server
+          cd /path/to/your/project/folder
+          
+          # 2. Pull the latest changes from GitHub
+          git pull origin main
+          
+          # 3. Activate virtual environment (if you use one)
+          # source venv/bin/activate
+          
+          # 4. Install dependencies if they changed
+          # pip install -r requirements.txt
+          
+          # 5. Restart the application service (example using systemd or pm2)
+          # sudo systemctl restart myapp
