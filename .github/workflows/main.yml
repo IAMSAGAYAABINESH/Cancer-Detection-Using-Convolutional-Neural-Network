@@ -17,7 +17,7 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SSH_IP }}
-        username: ${{ secrets.SSH_USER }} # Replace with your actual username string if not using a secret (e.g., 'ubuntu')
+        username: 'ubuntu' # Replace with your actual username string if not using a secret (e.g., 'ubuntu')
         key: ${{ secrets.SSH_KEY }}
         port: 22
         script: |
