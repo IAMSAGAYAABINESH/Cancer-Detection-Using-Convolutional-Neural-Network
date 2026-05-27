@@ -22,7 +22,7 @@ jobs:
         port: 22
         script: |
           # 1. Navigate to your project directory on the server
-          cd /path/to/your/project/folder
+          cd /home/ubuntu/lung_cancer/
           
           # 2. Pull the latest changes from GitHub
           git pull origin main
