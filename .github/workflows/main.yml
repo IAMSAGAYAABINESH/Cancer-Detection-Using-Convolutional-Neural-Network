@@ -1,9 +1,9 @@
-name: Deploy App to Server 
+name: Deploy App to Server
 
 on:
   push:
     branches:
-      - main  # Change this to 'master' if your default branch is named master
+      - main
 
 jobs:
   deploy:
@@ -17,21 +17,25 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SSH_IP }}
-        username: 'ubuntu' # Replace with your actual username string if not using a secret (e.g., 'ubuntu')
+        username: 'ubuntu'
         key: ${{ secrets.SSH_KEY }}
         port: 22
         script: |
-          # 1. Navigate to your project directory on the server
-          cd /home/ubuntu/lung_cancer/
+          # 1. Bypass the "dubious ownership" security check for this folder
+          git config --global --add safe.directory /home/ubuntu/lung_cancer
           
-          # 2. Pull the latest changes from GitHub
-          git pull origin main
-          
-          # 3. Activate virtual environment (if you use one)
-          # source venv/bin/activate
-          
-          # 4. Install dependencies if they changed
-          # pip install -r requirements.txt
-          
-          # 5. Restart the application service (example using systemd or pm2)
-          # sudo systemctl restart myapp
+          # 2. Ensure the directory exists and move into it
+          mkdir -p /home/ubuntu/lung_cancer
+          cd /home/ubuntu/lung_cancer
+
+          # 3. Check if it's already a git repository; if not, initialize it
+          if [ ! -d ".git" ]; then
+            echo "--- Initializing Git Repository on Server ---"
+            git init
+            git remote add origin https://github.com/IAMSAGAYAABINESH/Cancer-Detection-Using-Convolutional-Neural-Network.git
+          fi
+
+          # 4. Pull and reset your code cleanly
+          echo "--- Fetching and overwriting with latest changes ---"
+          git fetch origin main
+          git reset --hard origin/main
