@@ -3,7 +3,7 @@ name: Deploy App to Server
 on:
   push:
     branches:
-      - main
+      - main  # Triggers the pipeline every time you push to the main branch
 
 jobs:
   deploy:
@@ -21,21 +21,27 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: 22
         script: |
-          # 1. Bypass the "dubious ownership" security check for this folder
+          # 1. Ensure the directory exists first
+          mkdir -p /home/ubuntu/lung_cancer
+
+          # 2. Fix folder permissions so the 'ubuntu' user owns everything recursively
+          echo "--- Fixing folder permissions ---"
+          sudo chown -R ubuntu:ubuntu /home/ubuntu/lung_cancer
+
+          # 3. Bypass the git "dubious ownership" security check for this folder
           git config --global --add safe.directory /home/ubuntu/lung_cancer
           
-          # 2. Ensure the directory exists and move into it
-          mkdir -p /home/ubuntu/lung_cancer
+          # 4. Move into the project directory
           cd /home/ubuntu/lung_cancer
 
-          # 3. Check if it's already a git repository; if not, initialize it
+          # 5. Check if it's already a git repository; if not, initialize it automatically
           if [ ! -d ".git" ]; then
             echo "--- Initializing Git Repository on Server ---"
             git init
             git remote add origin https://github.com/IAMSAGAYAABINESH/Cancer-Detection-Using-Convolutional-Neural-Network.git
           fi
 
-          # 4. Pull and reset your code cleanly
+          # 6. Fetch and overwrite files with the latest changes from GitHub
           echo "--- Fetching and overwriting with latest changes ---"
           git fetch origin main
           git reset --hard origin/main
